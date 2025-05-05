@@ -1,0 +1,668 @@
+<script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set up each gallery
+            setupGallery('track-gallery', 'track-prev', 'track-next', 'track-debug');
+            setupGallery('rollout-gallery', 'rollout-prev', 'rollout-next', 'rollout-debug');
+            setupGallery('video-gallery', 'video-prev', 'video-next', 'video-debug');
+            
+            // Function to set up a gallery
+            function setupGallery(galleryId, prevId, nextId, debugId) {
+                const gallery = document.getElementById(galleryId);
+                const prevBtn = document.getElementById(prevId);
+                const nextBtn = document.getElementById(nextId);
+                const debugElement = document.getElementById(debugId);
+                
+                // Safety check
+                if (!gallery || !prevBtn || !nextBtn) {
+                    console.error('Missing gallery elements for', galleryId);
+                    return;
+                }
+                
+                // Get all videos and count them
+                const videos = gallery.querySelectorAll('.gallery-video');
+                const videoCount = videos.length;
+                const visibleCount = 3; // Number of visible videos at once
+                
+                // Log initial count
+                console.log(`Gallery ${galleryId} has ${videoCount} videos`);
+                
+                // Initial state
+                let position = 0;
+                updateButtonState();
+                
+                // Event listeners
+                prevBtn.addEventListener('click', function() {
+                    if (position > 0) {
+                        position--;
+                        moveGallery();
+                        console.log(`${galleryId}: moved to position ${position}`);
+                    }
+                });
+                
+                nextBtn.addEventListener('click', function() {
+                    if (position < videoCount - visibleCount) {
+                        position++;
+                        moveGallery();
+                        console.log(`${galleryId}: moved to position ${position}`);
+                    }
+                });
+                
+                // Move the gallery based on position
+                function moveGallery() {
+                    // Calculate the width of a single video container including margins
+                    const videoWidth = videos[0].offsetWidth + 
+                                       parseInt(getComputedStyle(videos[0]).marginLeft) + 
+                                       parseInt(getComputedStyle(videos[0]).marginRight);
+                    
+                    const translateX = -position * videoWidth;
+                    gallery.style.transform = `translateX(${translateX}px)`;
+                    updateButtonState();
+                }
+                
+                // Update button states based on position
+                function updateButtonState() {
+                    // Disable prev at beginning
+                    prevBtn.disabled = position === 0;
+                    prevBtn.style.opacity = position === 0 ? '0.5' : '1';
+                    
+                    // Disable next at end
+                    const isEnd = position >= videoCount - visibleCount;
+                    nextBtn.disabled = isEnd;
+                    nextBtn.style.opacity = isEnd ? '0.5' : '1';
+                }
+            }
+        });
+    </script><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AMPLIFY: Actionless Motion Priors for Robot Learning from Videos</title>
+    <style>
+        :root {
+            --primary-color: #333;
+            --secondary-color: #555;
+            --text-color: #333;
+            --bg-color: #fff;
+            --light-gray: #f5f5f5;
+            --border-color: #e0e0e0;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 40px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+        
+        h2 {
+            font-size: 1.8rem;
+            margin: 30px 0 15px;
+            color: var(--secondary-color);
+        }
+        
+        h3 {
+            font-size: 1.3rem;
+            margin: 20px 0 10px;
+        }
+        
+        p {
+            margin-bottom: 15px;
+        }
+        
+        .authors {
+            margin: 15px 0 30px;
+            font-size: 1.1rem;
+        }
+        
+        .author {
+            display: inline-block;
+            margin-right: 15px;
+        }
+        
+        .affiliation {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            background-color: var(--light-gray);
+            margin: 30px 0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .video-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            color: #666;
+        }
+        
+        .placeholder-icon {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+        
+        .figure-container {
+            width: 100%;
+            margin: 30px 0;
+            text-align: center;
+        }
+        
+        .figure-placeholder {
+            width: 100%;
+            padding-bottom: 50%;
+            background-color: var(--light-gray);
+            border-radius: 4px;
+            position: relative;
+            margin-bottom: 10px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .figure-placeholder-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #666;
+        }
+        
+        .figure-caption {
+            font-size: 0.9rem;
+            color: #666;
+            text-align: center;
+            max-width: 90%;
+            margin: 0 auto;
+        }
+        
+        .abstract {
+            background-color: var(--light-gray);
+            padding: 25px;
+            border-radius: 4px;
+            margin: 30px 0;
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .key-points {
+            margin: 20px 0;
+        }
+        
+        .key-points li {
+            margin-bottom: 10px;
+            list-style-type: none;
+            position: relative;
+            padding-left: 25px;
+        }
+        
+        .key-points li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--primary-color);
+        }
+        
+        .two-column {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin: 30px 0;
+        }
+        
+        .column {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .result-box {
+            background-color: var(--light-gray);
+            padding: 20px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--secondary-color);
+        }
+        
+        .gallery {
+            position: relative;
+            width: 100%;
+            margin: 40px 0;
+            overflow: hidden;
+        }
+        
+        .gallery-container {
+            width: 100%;
+            display: flex;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .gallery-video {
+            flex: 0 0 calc(33.333% - 20px);
+            margin: 0 10px;
+            background-color: var(--light-gray);
+            border-radius: 4px;
+            position: relative;
+            padding-bottom: 25%;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .gallery-video-inner {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            color: #666;
+        }
+        
+        .gallery-navigation {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        
+        .gallery-nav-button {
+            background-color: #888;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            margin: 0 10px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .gallery-nav-button:hover {
+            background-color: #666;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        
+        footer {
+            margin-top: 60px;
+            padding: 30px 0;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .button {
+            display: inline-block;
+            background-color: #888;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 25px;
+            text-decoration: none;
+            margin: 10px;
+            transition: all 0.3s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .button:hover {
+            background-color: #666;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        
+        .button-container {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .method-diagram {
+            width: 100%;
+            margin: 30px 0;
+            padding: 20px;
+            background-color: var(--light-gray);
+            border-radius: 4px;
+        }
+
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .result-card {
+            background-color: var(--light-gray);
+            border-radius: 4px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .code {
+            text-align: left;
+            font-family: monospace;
+            background: #f7f7f7;
+            padding: 15px;
+            border-radius: 4px;
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+        
+        @media (max-width: 768px) {
+            .two-column {
+                flex-direction: column;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>AMPLIFY: Actionless Motion Priors for Robot Learning from Videos</h1>
+        <div class="authors">
+            <p>Anonymous Authors</p>
+            <p><i>Double-blind submission</i></p>
+        </div>
+        <div class="affiliation">
+            <p>Conference on Robot Learning (CoRL) 2025</p>
+        </div>
+    </header>
+    
+    <div class="video-container">
+        <div class="video-placeholder">
+            <div class="placeholder-icon">▶</div>
+            <p>Video Overview (3 minutes)</p>
+        </div>
+    </div>
+    
+    <div class="abstract">
+        <h2>Abstract</h2>
+        <p>Action-labeled data for robotics is scarce and expensive, limiting the generalization of learned policies. In contrast, vast amounts of action-free video data are readily available, but translating these observations into effective policies remains a challenge. We introduce AMPLIFY, a novel framework that leverages large-scale video data by encoding visual dynamics into compact, discrete motion tokens derived from keypoint trajectories. Our modular approach separates visual motion prediction from action inference, decoupling the challenges of learning <strong>what</strong> motion defines a task from <strong>how</strong> robots can perform it.</p>
+    </div>
+    
+    <div class="button-container" style="margin-top: 10px;">
+        <a href="#" class="button"><span style="margin-right: 10px;">📄</span>Paper (PDF)</a>
+        <a href="#" class="button"><span style="margin-right: 10px;">💻</span>Code (GitHub)</a>
+        <a href="#" class="button"><span style="margin-right: 10px;">📊</span>Additional Results</a>
+    </div>
+    
+    <h2>Key Contributions</h2>
+    <ul class="key-points">
+        <li>We present the first <em>latent</em> keypoint dynamics model and investigate crucial design choices.</li>
+        <li>We demonstrate state-of-the-art keypoint prediction accuracy on three large-scale video datasets.</li>
+        <li>We train a data-efficient and generalizable policy that can learn from action-free human data.</li>
+        <li>We apply latent motions to conditional video generation, outperforming previous baselines.</li>
+    </ul>
+    
+    <div class="figure-container">
+        <div class="figure-placeholder">
+            <div class="figure-placeholder-text">Fig 1: AMPLIFY Overview - Animated GIF will appear here</div>
+        </div>
+        <p class="figure-caption">Overview of AMPLIFY. Our approach decomposes policy learning into forward and inverse dynamics, using latent keypoint motion as an intermediate representation. The forward model can be trained on <em>any</em> video data, while the inverse model can be trained on <em>any</em> interaction data. This modular design enables learning from diverse data sources and generalizing to tasks with zero action data.</p>
+    </div>
+    
+    <h2>Motivation: Why Latent Motion Priors?</h2>
+    <p>Behavior Cloning (BC) approaches require prohibitively large amounts of action-labeled expert demonstrations. In contrast, AMPLIFY leverages abundant action-free video data by:</p>
+    <ul class="key-points">
+        <li>Learning a compact latent space for keypoint motion that efficiently captures action-relevant dynamics</li>
+        <li>Decoupling the challenges of learning <em>what</em> motion corresponds to a task from <em>how</em> to execute it</li>
+        <li>Enabling independent scaling of the forward and inverse dynamics models using heterogeneous data sources</li>
+    </ul>
+    
+    <h2>Method</h2>
+    <div class="method-diagram">
+        <div class="figure-placeholder">
+            <div class="figure-placeholder-text">Method Diagram: Three-stage AMPLIFY approach</div>
+        </div>
+    </div>
+    <p>AMPLIFY consists of three stages:</p>
+    <ol>
+        <li><strong>Motion Tokenization:</strong> Keypoint tracks are compressed into a discrete latent space using Finite Scalar Quantization (FSQ). For each timestep and point, the decoder predicts motions in a local window.</li>
+        <li><strong>Forward Dynamics:</strong> A transformer model predicts latent motion tokens for the next T timesteps based on the current observation and task description.</li>
+        <li><strong>Inverse Dynamics:</strong> A model decodes predicted latent motions into a sequence of robot actions for execution.</li>
+    </ol>
+    
+    <h2>Results</h2>
+    
+    <h3>Superior Keypoint Prediction</h3>
+    <div class="figure-container">
+        <div class="figure-placeholder">
+            <div class="figure-placeholder-text">Fig: Keypoint prediction visualization</div>
+        </div>
+        <p class="figure-caption">AMPLIFY achieves 3.7× better MSE and 2.5× better pixel accuracy compared to previous approaches.</p>
+    </div>
+    
+    <div class="table-container">
+        <div class="figure-placeholder" style="padding-bottom: 30%">
+            <div class="figure-placeholder-text">Table: Track Prediction Results</div>
+        </div>
+        <p class="figure-caption">Prediction results comparing AMPLIFY to ATM, Track2Act, and Seer across various datasets and metrics.</p>
+    </div>
+    
+    <h3>Zero-Shot Generalization: Learning Without Target Task Actions</h3>
+    <div class="figure-container">
+        <div class="figure-placeholder">
+            <div class="figure-placeholder-text">Fig: Zero-shot generalization results visualization</div>
+        </div>
+        <p class="figure-caption">AMPLIFY is the first approach to report non-trivial success on LIBERO without using any action data from target tasks. Our method achieves substantial success rates where baseline methods completely fail.</p>
+    </div>
+    
+    <div class="table-container">
+        <div class="figure-placeholder" style="padding-bottom: 30%">
+            <div class="figure-placeholder-text">Table: Zero-shot Generalization Results</div>
+        </div>
+        <p class="figure-caption">Comparison between AMPLIFY and baseline approaches (Diffusion Policy, QueST, BAKU) on different LIBERO subsets when trained only on LIBERO-90 actions.</p>
+    </div>
+    
+    <h3>Few-Shot Learning: Efficient Learning from Limited Action Data</h3>
+    <div class="figure-container">
+        <div class="figure-placeholder">
+            <div class="figure-placeholder-text">Fig: Few-shot learning performance across LIBERO tasks</div>
+        </div>
+        <p class="figure-caption">AMPLIFY consistently outperforms baselines when trained with limited action data, showing 1.2-2.2× improvement with only 2-10 demonstrations per task.</p>
+    </div>
+    
+    <div class="table-container">
+        <div class="figure-placeholder" style="padding-bottom: 30%">
+            <div class="figure-placeholder-text">Table: Few-shot Learning Results</div>
+        </div>
+        <p class="figure-caption">Success rates of AMPLIFY versus ATM and no-pre-training baselines when trained on 2, 5, and 10 demonstrations per task across all LIBERO subsets.</p>
+    </div>
+    
+    <h3>Cross-Embodiment Transfer: Learning from Human Videos</h3>
+    <div class="figure-container">
+        <div class="figure-placeholder">
+            <div class="figure-placeholder-text">Fig: Cross-embodiment transfer performance on real-world tasks</div>
+        </div>
+        <p class="figure-caption">By leveraging human demonstration videos, AMPLIFY achieves 1.4× average improvement over baselines on real-world robotic tasks.</p>
+    </div>
+    
+    <div class="table-container">
+        <div class="figure-placeholder" style="padding-bottom: 30%">
+            <div class="figure-placeholder-text">Table: Real-world Task Performance</div>
+        </div>
+        <p class="figure-caption">Success rates on three real-world tasks (Place Cube, Stack Cups, Open Box & Place Eggplant) when training with 5, 10, or all available demonstrations.</p>
+    </div>
+    
+    <h2>Video Galleries</h2>
+    
+    <h3>Track Prediction Results</h3>
+    <div class="gallery">
+        <div class="gallery-container" id="track-gallery">
+            <div class="gallery-video">
+                <div class="gallery-video-inner">
+                    <div class="placeholder-icon">▶</div>
+                    <p>Real-world Track Predictions</p>
+                </div>
+            </div>
+            <div class="gallery-video">
+                <div class="gallery-video-inner">
+                    <div class="placeholder-icon">▶</div>
+                    <p>BridgeData Track Predictions</p>
+                </div>
+            </div>
+            <div class="gallery-video">
+                <div class="gallery-video-inner">
+                    <div class="placeholder-icon">▶</div>
+                    <p>Something-Something v2 Tracks</p>
+                </div>
+            </div>
+            <div class="gallery-video">
+                <div class="gallery-video-inner">
+                    <div class="placeholder-icon">▶</div>
+                    <p>LIBERO Track Predictions</p>
+                </div>
+            </div>
+            <div class="gallery-video">
+                <div class="gallery-video-inner">
+                    <div class="placeholder-icon">▶</div>
+                    <p>Human to Robot Tracking</p>
+                </div>
+            </div>
+        </div>
+        <div class="gallery-navigation">
+            <button class="button gallery-button" id="track-prev">◀ Previous</button>
+            <button class="button gallery-button" id="track-next">Next ▶</button>
+        </div>
+        <div class="debug-info" id="track-debug"></div>
+    </div>
+    
+    <h3>Robot Policy Rollouts</h3>
+    <div class="gallery">
+        <div class="gallery-container" id="rollout-gallery">
+            <div class="gallery-video">
+                <div class="gallery-video-inner">
+                    <div class="placeholder-icon">▶</div>
+                    <p>Place Cube Task</p>
+                </div>
+            </div>
+            <div class="gallery-video">
+                <div class="gallery-video-inner">
+                    <div class="placeholder-icon">▶</div>
+                    <p>Stack Cups Task</p>
+                </div>
+            </div>
+            <div class="gallery-video">
+                <div class="gallery-video-inner">
+                    <div class="placeholder-icon">▶</div>
+                    <p>Open Box & Place Eggplant</p>
+                </div>
+            </div>
+            <div class="gallery-video">
+                <div class="gallery-video-inner">
+                    <div class="placeholder-icon">▶</div>
+                    <p>LIBERO Long Task</p>
+                </div>
+            </div>
+            <div class="gallery-video">
+                <div class="gallery-video-inner">
+                    <div class="placeholder-icon">▶</div>
+                    <p>LIBERO Object Task</p>
+                </div>
+            </div>
+            <div class="gallery-video">
+                <div class="gallery-video-inner">
+                    <div class="placeholder-icon">▶</div>
+                    <p>LIBERO Spatial Task</p>
+                </div>
+            </div>
+            <div class="gallery-video">
+                <div class="gallery-video-inner">
+                    <div class="placeholder-icon">▶</div>
+                    <p>LIBERO Goal Task</p>
+                </div>
+            </div>
+        </div>
+        <div class="gallery-navigation">
+            <button class="button gallery-button" id="rollout-prev">◀ Previous</button>
+            <button class="button gallery-button" id="rollout-next">Next ▶</button>
+        </div>
+        <div class="debug-info" id="rollout-debug"></div>
+    </div>
+    
+    <h3>Video Prediction Results</h3>
+    <div class="gallery">
+        <div class="gallery-container" id="video-gallery">
+            <div class="gallery-video">
+                <div class="gallery-video-inner">
+                    <div class="placeholder-icon">▶</div>
+                    <p>Ground Truth</p>
+                </div>
+            </div>
+            <div class="gallery-video">
+                <div class="gallery-video-inner">
+                    <div class="placeholder-icon">▶</div>
+                    <p>AVDC Baseline</p>
+                </div>
+            </div>
+            <div class="gallery-video">
+                <div class="gallery-video-inner">
+                    <div class="placeholder-icon">▶</div>
+                    <p>AMPLIFY + AVDC</p>
+                </div>
+            </div>
+            <div class="gallery-video">
+                <div class="gallery-video-inner">
+                    <div class="placeholder-icon">▶</div>
+                    <p>Complex Scene Example 1</p>
+                </div>
+            </div>
+            <div class="gallery-video">
+                <div class="gallery-video-inner">
+                    <div class="placeholder-icon">▶</div>
+                    <p>Complex Scene Example 2</p>
+                </div>
+            </div>
+        </div>
+        <div class="gallery-navigation">
+            <button class="button gallery-button" id="video-prev">◀ Previous</button>
+            <button class="button gallery-button" id="video-next">Next ▶</button>
+        </div>
+        <div class="debug-info" id="video-debug"></div>
+    </div>
+    
+
+    
+    <footer>
+        <p>© 2025 AMPLIFY | Georgia Institute of Technology</p>
+        <p>Contact: <a href="mailto:example@gatech.edu">example@gatech.edu</a></p>
+        <p>More information can be found at <a href="https://amplify-robotics.github.io/">amplify-robotics.github.io</a></p>
+    </footer>
+</body>
+</html>
