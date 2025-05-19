@@ -8,15 +8,15 @@
     --bg-color: #fff;
     --light-gray: #f5f5f5;
     --border-color: #e0e0e0;
-  }
+}
   
-  * {
+* {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-  }
+}
   
-  body {
+body {
     font-family: 'Lato', sans-serif;
     line-height: 1.6;
     color: var(--text-color);
@@ -24,21 +24,20 @@
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 20px;
-  }
+}
 
 /* =========================
    Typography
 =========================== */
-
 h1 {
     font-size: 2.5rem;
-    margin-bottom: 0px;
+    margin-bottom: 0;
     color: var(--primary-color);
 }
 
 h2 {
     font-size: 1.8rem;
-    margin: px 0 0 15px;
+    margin: 15px 0;
     color: var(--secondary-color);
 }
 
@@ -58,7 +57,6 @@ p {
 header {
     text-align: center;
     padding: 30px 0 10px;
-    /* border-bottom: 1px solid var(--border-color); */
 }
 
 .title-box {
@@ -79,7 +77,6 @@ header {
     margin: 30px 0;
 }
 
-
 footer {
     margin-top: 60px;
     padding: 30px 0;
@@ -89,16 +86,14 @@ footer {
     color: #666;
 }
 
-
 /* =========================
    Authors Section
 =========================== */
-
 .authors {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 30px;              /* space between authors */
+    gap: 30px;
     margin: 20px 0 40px;
     text-align: center;
 }
@@ -118,11 +113,9 @@ footer {
     color: #666;
 }
 
-
 /* =========================
    Buttons & Links
 =========================== */
-
 .button-container {
     text-align: center;
     margin: 30px 0;
@@ -147,8 +140,8 @@ footer {
     box-shadow: 0 4px 8px rgba(0,0,0,0.15);
 }
 
-.gallery-nav-button {
-    background-color: #888;
+.gallery-button {
+    background-color: #334;
     color: white;
     border: none;
     padding: 8px 16px;
@@ -159,17 +152,15 @@ footer {
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
-.gallery-nav-button:hover {
-    background-color: #666;
+.gallery-button:hover {
+    background-color: #223;
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0,0,0,0.15);
 }
 
-
 /* =========================
-   Components
+   Content Containers
 =========================== */
-
 .figure-caption {
     font-size: 0.9rem;
     color: #666;
@@ -180,7 +171,7 @@ footer {
 
 .block-caption {
     background-color: var(--light-gray);
-    padding: 20px 20px;
+    padding: 20px;
     border-radius: 10px;
     font-size: 0.9rem;
     color: #666;
@@ -195,7 +186,6 @@ footer {
     border-radius: 10px;
     max-width: 90%;
     margin: 0 auto;
-    /* border-left: 4px solid var(--primary-color); */
 }
 
 .text-box {
@@ -227,49 +217,6 @@ footer {
     border-radius: 4px;
     margin-bottom: 20px;
     border-left: 4px solid var(--secondary-color);
-}
-
-.gallery {
-    position: relative;
-    width: 100%;
-    margin: 40px 0;
-    overflow: hidden;
-}
-
-.gallery-container {
-    width: 100%;
-    display: flex;
-    position: relative;
-    overflow: hidden;
-}
-
-.gallery-video {
-    flex: 0 0 calc(33.333% - 20px);
-    margin: 0 10px;
-    background-color: var(--light-gray);
-    border-radius: 4px;
-    position: relative;
-    padding-bottom: 25%;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-}
-
-.gallery-video-inner {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    color: #666;
-}
-
-.gallery-navigation {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
 }
 
 .method-diagram {
@@ -305,27 +252,8 @@ footer {
 }
 
 /* =========================
-   Responsive Design
+   Video Container
 =========================== */
-
-@media (max-width: 768px) {
-    .two-column {
-        flex-direction: column;
-    }
-    
-    h1 {
-        font-size: 2rem;
-    }
-    
-    h2 {
-        font-size: 1.5rem;
-    }
-}
-    
-/* =========================
-   TO REMOVE
-=========================== */
-
 .video-container {
     position: relative;
     width: 100%;
@@ -354,6 +282,16 @@ footer {
     margin-bottom: 10px;
 }
 
+/* Custom video styling */
+.custom-video {
+    width: 100%;
+    border-radius: 4px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+/* =========================
+   Figure Components
+=========================== */
 .figure-container {
     width: 100%;
     margin: 30px 0;
@@ -376,4 +314,143 @@ footer {
     left: 50%;
     transform: translate(-50%, -50%);
     color: #666;
+}
+
+.gallery {
+    width: 100%;
+    margin-bottom: 2em;
+    position: relative;
+    overflow: hidden; /* Hide any overflow */
+}
+
+.gallery-container {
+    display: flex;
+    gap: 10px;
+    padding: 10px 0;
+    height: auto !important;
+    align-items: flex-start !important;
+    overflow: visible !important; /* Allow overflow for clones */
+    position: relative;
+}
+
+/* Hide any potential scrollbars */
+.gallery *::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+}
+
+.gallery * {
+    -ms-overflow-style: none !important;
+    scrollbar-width: none !important;
+    overflow: -moz-scrollbars-none !important;
+}
+
+/* Style cloned items the same as originals */
+.gallery-video-clone {
+    /* Use same styling as regular gallery videos */
+}
+
+/* Ensure proper appearance during transitions */
+.gallery-video {
+    flex: 0 0 auto;
+    width: 300px !important; 
+    height: auto !important;
+    margin-right: 10px;
+}
+
+.gallery-video {
+    flex: 0 0 auto;
+    width: 300px !important; 
+    height: auto !important;
+    scroll-snap-align: start;
+    margin-right: 10px;
+}
+
+.gallery-video-inner {
+    position: relative !important;
+    width: 100% !important;
+    height: 0 !important;
+    padding-top: 100% !important; /* Creates a square container */
+    overflow: hidden !important;
+}
+
+.gallery-video-inner video,
+.gallery-video-inner img {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: center !important;
+}
+
+.gallery-video-inner p {
+    position: absolute !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 8px !important;
+    background: rgba(0,0,0,0.7) !important;
+    color: white !important;
+    text-align: center !important;
+}
+
+.gallery-navigation {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+/* Debug display */
+.debug-info {
+    text-align: center;
+    font-size: 0.8rem;
+    color: #999;
+    margin-top: 10px;
+}
+
+/* Method section specific styles */
+.method {
+    margin: 20px 0 40px;
+}
+
+/* Overview section specific styles */
+.overview {
+    margin: 30px 0;
+}
+
+/* =========================
+   Responsive Design
+=========================== */
+@media (max-width: 768px) {
+    .two-column {
+        flex-direction: column;
+    }
+    
+    h1 {
+        font-size: 2rem;
+    }
+    
+    h2 {
+        font-size: 1.5rem;
+    }
+    
+    .gallery-video {
+        width: 250px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .gallery-video {
+        width: 200px !important;
+    }
+    
+    .button {
+        display: block;
+        margin: 10px auto;
+        width: 80%;
+    }
 }
