@@ -3,6 +3,8 @@ document.addEventListener('DOMContentLoaded', function() {
     initGallery('track-gallery', 'track-prev', 'track-next');
     initGallery('rollout-gallery', 'rollout-prev', 'rollout-next');
     initGallery('video-gallery', 'video-prev', 'video-next');
+    initGallery('generalization-gallery', 'generalization-prev', 'generalization-next');
+
     
     // Setup autoplay for all gallery videos
     setupGalleryVideos();
@@ -55,20 +57,39 @@ function initGallery(galleryId, prevBtnId, nextBtnId) {
     setupClones();
     
     // Now get all items including clones
-    const allItems = Array.from(gallery.querySelectorAll('.gallery-video'));
-    
-    // Calculate item width including margin
-    const itemWidth = originalItems[0].offsetWidth + parseInt(getComputedStyle(originalItems[0]).marginRight);
-    
-    // Start position (after the cloned end items)
-    let currentIndex = visibleItems;
+    let currentIndex = visibleItems; // Start after the prepended clones
     let isAnimating = false;
     
-    // Initial positioning
+    // Calculate the offset to a specific index (sum of widths)
+    function calculateOffset(targetIndex) {
+        const allItems = gallery.querySelectorAll('.gallery-video, .gallery-video-clone');
+        let offset = 0;
+        
+        for (let i = 0; i < targetIndex && i < allItems.length; i++) {
+            offset += allItems[i].offsetWidth;
+            // Add the margin/gap between items (10px based on CSS)
+            if (i < targetIndex - 1) {
+                offset += 10;
+            }
+        }
+        
+        return offset;
+    }
+    
+    // Get the width of a specific item
+    function getItemWidth(index) {
+        const allItems = gallery.querySelectorAll('.gallery-video, .gallery-video-clone');
+        if (allItems[index]) {
+            return allItems[index].offsetWidth;
+        }
+        return 0;
+    }
+    
+    // Position the gallery at current index
     function positionGallery(animate = false) {
         gallery.style.transition = animate ? 'transform 0.4s ease-out' : 'none';
-        const translateX = -currentIndex * itemWidth;
-        gallery.style.transform = `translateX(${translateX}px)`;
+        const offset = calculateOffset(currentIndex);
+        gallery.style.transform = `translateX(-${offset}px)`;
     }
     
     // Initialize position
@@ -78,6 +99,9 @@ function initGallery(galleryId, prevBtnId, nextBtnId) {
     function navigateGallery(direction) {
         if (isAnimating) return;
         isAnimating = true;
+        
+        const allItems = gallery.querySelectorAll('.gallery-video, .gallery-video-clone');
+        const totalItems = allItems.length;
         
         if (direction === 'next') {
             currentIndex++;
@@ -92,15 +116,15 @@ function initGallery(galleryId, prevBtnId, nextBtnId) {
         setTimeout(() => {
             isAnimating = false;
             
-            // If we're at a clone, jump to the real item
+            // Check if we need to reset position for infinite loop
             if (currentIndex >= originalItems.length + visibleItems) {
-                // We've gone past the last real item to a clone
+                // We've reached the cloned items at the end
                 currentIndex = visibleItems;
-                positionGallery();
+                positionGallery(false);
             } else if (currentIndex < visibleItems) {
-                // We've gone before the first real item to a clone
+                // We've reached the cloned items at the beginning
                 currentIndex = originalItems.length;
-                positionGallery();
+                positionGallery(false);
             }
         }, 400); // Match this to the transition duration
     }
@@ -114,16 +138,8 @@ function initGallery(galleryId, prevBtnId, nextBtnId) {
     window.addEventListener('resize', () => {
         clearTimeout(resizeTimeout);
         resizeTimeout = setTimeout(() => {
-            // Recalculate item width
-            const newItemWidth = originalItems[0].offsetWidth + 
-                                 parseInt(getComputedStyle(originalItems[0]).marginRight);
-            
-            if (Math.abs(newItemWidth - itemWidth) > 5) {
-                // Update position with new width
-                const translateX = -currentIndex * newItemWidth;
-                gallery.style.transition = 'none';
-                gallery.style.transform = `translateX(${translateX}px)`;
-            }
+            // Recalculate position with new widths
+            positionGallery(false);
         }, 200);
     });
 }
@@ -165,7 +181,7 @@ function setupGalleryVideos() {
         // Apply proper styling to fit the container
         img.style.width = '100%';
         img.style.height = '100%';
-        img.style.objectFit = 'cover';
+        img.style.objectFit = 'contain';  // Changed from 'cover' to 'contain' to match CSS
         img.style.objectPosition = 'center';
         img.style.position = 'absolute';
         img.style.top = '0';

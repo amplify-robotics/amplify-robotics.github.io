@@ -316,11 +316,14 @@ footer {
     color: #666;
 }
 
+/* =========================
+   Gallery Components - Updated to preserve aspect ratios
+=========================== */
 .gallery {
     width: 100%;
     margin-bottom: 2em;
     position: relative;
-    overflow: hidden; /* Hide any overflow */
+    overflow: hidden;
 }
 
 .gallery-container {
@@ -328,8 +331,8 @@ footer {
     gap: 10px;
     padding: 10px 0;
     height: auto !important;
-    align-items: flex-start !important;
-    overflow: visible !important; /* Allow overflow for clones */
+    align-items: stretch !important;
+    overflow: visible !important;
     position: relative;
 }
 
@@ -351,39 +354,32 @@ footer {
     /* Use same styling as regular gallery videos */
 }
 
-/* Ensure proper appearance during transitions */
 .gallery-video {
     flex: 0 0 auto;
-    width: 300px !important; 
-    height: auto !important;
-    margin-right: 10px;
-}
-
-.gallery-video {
-    flex: 0 0 auto;
-    width: 300px !important; 
-    height: auto !important;
+    width: auto !important;
+    height: 250px !important;
     scroll-snap-align: start;
     margin-right: 10px;
 }
 
 .gallery-video-inner {
     position: relative !important;
-    width: 100% !important;
-    height: 0 !important;
-    padding-top: 100% !important; /* Creates a square container */
+    width: auto !important;
+    height: 100% !important;
     overflow: hidden !important;
 }
 
 .gallery-video-inner video,
 .gallery-video-inner img {
-    position: absolute !important;
+    position: relative !important;
     top: 0 !important;
     left: 0 !important;
-    width: 100% !important;
+    width: auto !important;
     height: 100% !important;
-    object-fit: cover !important;
+    max-width: none !important;
+    object-fit: contain !important;
     object-position: center !important;
+    display: block !important;
 }
 
 .gallery-video-inner p {
@@ -439,13 +435,13 @@ footer {
     }
     
     .gallery-video {
-        width: 250px !important;
+        height: 200px !important;
     }
 }
 
 @media (max-width: 480px) {
     .gallery-video {
-        width: 200px !important;
+        height: 150px !important;
     }
     
     .button {
