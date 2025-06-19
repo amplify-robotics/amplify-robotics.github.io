@@ -57,32 +57,20 @@
     </div> -->
 
 
-    <!-- Abstract -->
-    
-    <div class="abstract">
-        <!-- <h2>Abstract</h2> -->
-        <p>Action-labeled data for robotics is scarce and expensive, limiting the generalization of learned policies. In contrast, vast amounts of action-free video data are readily available, but translating these observations into effective policies remains a challenge. We introduce AMPLIFY, a novel framework that leverages large-scale video data by encoding visual dynamics into compact, discrete motion tokens derived from keypoint trajectories. Our modular approach separates visual motion prediction from action inference, decoupling the challenges of learning <strong>what</strong> motion defines a task from <strong>how</strong> robots can perform it.</p>
-    </div>  
-
-
-    <!-- Contributions -->
-
+    <!-- Introduction Section -->
     <div class="text-box">
-        <h2>Key Contributions</h2>
+        <!-- <h2>Introduction</h2> -->
+        <p>Action-labeled data for robotics is scarce and expensive, limiting the generalization of learned policies. In contrast, vast amounts of action-free video data are readily available, but translating these observations into effective policies remains a challenge. We introduce AMPLIFY, a novel framework that leverages large-scale video data by encoding visual dynamics into compact, discrete motion tokens derived from keypoint trajectories. Our modular approach separates visual motion prediction from action inference, decoupling the challenges of learning <strong>what</strong> motion defines a task from <strong>how</strong> robots can perform it.</p>
+
+        <h3>Key Contributions</h3>
         <ul class="key-points">
             <li>We present the first <em>latent</em> keypoint dynamics model and investigate crucial design choices.</li>
             <li>We demonstrate state-of-the-art keypoint prediction accuracy on three large-scale video datasets.</li>
             <li>We train a data-efficient and generalizable policy that can learn from action-free human data.</li>
             <li>We apply latent motions to conditional video generation, outperforming previous baselines.</li>
         </ul>
-    </div>
-    
 
-
-    <!-- Motivation -->
-    
-    <div class="text-box">
-        <h2>Motivation: Why Latent Motion Priors?</h2>
+        <h3>Why Actionless Motion Priors?</h3>
         <p>Behavior Cloning (BC) approaches require prohibitively large amounts of action-labeled expert demonstrations. In contrast, AMPLIFY leverages abundant action-free video data by:</p>
         <ul class="key-points">
             <li>Learning a compact latent space for keypoint motion that efficiently captures action-relevant dynamics</li>
@@ -91,27 +79,27 @@
         </ul>
     </div>
 
-    <!-- Method -->
+    <!-- Method Section -->
     <div class="text-box">
         <h2>Method</h2>
-    </div>
-    <div class="method">
-        <video class="custom-video"
-            data-controls
-            data-autoplay
-            data-loop
-            data-muted
-            width="100%">
-            <source src="assets/videos/fig2-web-720-60.mp4" type="video/mp4">
-        </video>
-        <div class="block-caption" style="text-align: left;">
-            <p><strong>AMPLIFY consists of three stages:</strong></p>
-            <ol style="margin-left: 1em;">
-              <li><strong>Motion Tokenization:</strong> Keypoint tracks are compressed into a discrete latent space using Finite Scalar Quantization (FSQ). For each timestep and point, the decoder predicts motions in a local window.</li>
-              <li><strong>Forward Dynamics:</strong> A transformer model predicts latent motion tokens for the next T timesteps based on the current observation and task description.</li>
-              <li><strong>Inverse Dynamics:</strong> A model decodes predicted latent motions into a sequence of robot actions for execution.</li>
-            </ol>
-          </div>
+        <div class="method">
+            <video class="custom-video"
+                data-controls
+                data-autoplay
+                data-loop
+                data-muted
+                width="100%">
+                <source src="assets/videos/fig2-web-720-60.mp4" type="video/mp4">
+            </video>
+            <div class="block-caption" style="text-align: left;">
+                <p><strong>AMPLIFY consists of three stages:</strong></p>
+                <ol style="margin-left: 1em;">
+                  <li><strong>Motion Tokenization:</strong> Keypoint tracks are compressed into a discrete latent space using Finite Scalar Quantization (FSQ). For each timestep and point, the decoder predicts motions in a local window.</li>
+                  <li><strong>Forward Dynamics:</strong> A transformer model predicts latent motion tokens for the next T timesteps based on the current observation and task description.</li>
+                  <li><strong>Inverse Dynamics:</strong> A model decodes predicted latent motions into a sequence of robot actions for execution.</li>
+                </ol>
+              </div>
+        </div>
     </div>
     
     <!-- Results
@@ -153,11 +141,11 @@
         
     </div> -->
 
-    <!-- Video Galleries -->
-    
-    <!-- <h2>Video Galleries</h2> -->
-    
-    <h3>Track Prediction Results</h3>
+    <!-- Results Section -->
+    <div class="text-box">
+        <h2>Results</h2>
+        
+        <h3>Track Prediction Results</h3>
     <div class="gallery">
         <div class="gallery-container" id="track-gallery">
             <div class="gallery-video">
@@ -385,6 +373,8 @@
         </div>
         <div class="debug-info" id="video-debug"></div>
     </div>
+    </div> <!-- End Results Section -->
+    
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Target only videos in the rollout gallery
