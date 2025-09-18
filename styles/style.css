@@ -89,28 +89,45 @@ footer {
 /* =========================
    Authors Section
 =========================== */
-.authors {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 30px;
-    margin: 20px 0 40px;
+.publication-authors {
     text-align: center;
+    margin: 10px auto 12px;
+    max-width: 900px;
+    line-height: 1.8;
+    font-family: 'Google Sans', 'Noto Sans', 'Castoro', sans-serif;
+    font-size: 1.5rem;
 }
 
-.author {
-    min-width: 120px;
+.author-block {
+    display: inline-block;
+    margin: 0 6px;
+    font-size: inherit;
 }
 
-.name {
-    font-weight: 600;
-    font-size: 1.1rem;
-    color: var(--primary-color);
+.publication-authors a {
+    color: #3273dc;
+    text-decoration: none;
+    font-weight: 400;
 }
 
-.affiliation {
-    font-size: 0.9rem;
-    color: #666;
+.publication-authors a:hover {
+    text-decoration: underline;
+}
+
+.author-block sup {
+    font-size: 0.75em;
+    vertical-align: super;
+    margin-left: 2px;
+}
+
+.publication-affiliations {
+    text-align: center;
+    margin: 4px auto 18px;
+    max-width: 900px;
+    line-height: 1.6;
+    font-family: 'Google Sans', 'Noto Sans', 'Castoro', sans-serif;
+    font-size: 1.25rem;
+    color: #4a4a4a;
 }
 
 /* =========================
@@ -350,9 +367,6 @@ footer {
 }
 
 /* Style cloned items the same as originals */
-.gallery-video-clone {
-    /* Use same styling as regular gallery videos */
-}
 
 .gallery-video {
     flex: 0 0 auto;
